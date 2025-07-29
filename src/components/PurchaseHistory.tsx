@@ -13,9 +13,12 @@ export function PurchaseHistory() {
   const { purchases, deletePurchase, selectedPeriod, selectedDate } = useStore()
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
+  // Ensure selectedDate is always a Date object
+  const currentDate = selectedDate instanceof Date ? selectedDate : new Date(selectedDate)
+
   // Get purchases for the selected period
   const getDateRange = () => {
-    const date = new Date(selectedDate)
+    const date = new Date(currentDate)
     let from: Date, to: Date
 
     switch (selectedPeriod) {
@@ -119,9 +122,9 @@ export function PurchaseHistory() {
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2">
             <Calendar className="w-5 h-5" />
-            {selectedPeriod === 'day' && formatDate(selectedDate.toISOString().split('T')[0])}
+            {selectedPeriod === 'day' && formatDate(currentDate.toISOString().split('T')[0])}
             {selectedPeriod === 'week' && 'This Week'}
-            {selectedPeriod === 'month' && selectedDate.toLocaleDateString('en-PK', { month: 'long', year: 'numeric' })}
+            {selectedPeriod === 'month' && currentDate.toLocaleDateString('en-PK', { month: 'long', year: 'numeric' })}
           </CardTitle>
         </CardHeader>
         <CardContent>
